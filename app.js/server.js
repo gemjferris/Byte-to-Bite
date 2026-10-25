@@ -1,7 +1,7 @@
 
 const express = require('express');
 const session = require('express-session');
-const MySQLSTore = require('express-mysql-session')(session);
+const MySQLStore = require('express-mysql-session')(session);
 const connection = require('./db');
 
 const app = express();
@@ -9,7 +9,7 @@ const app = express();
 app.use(express.urlencoded({extended: true}));
 
 const sessionStore = new MySQLStore({
-    host: 'localhost'.
+    host: 'localhost',
         user: 'root',
     password: process.env.DB_PASSWORD,
     database: 'byte_to_bite'
@@ -17,7 +17,7 @@ const sessionStore = new MySQLStore({
 
 app.use(session({
     key: 'byte_to_bite_session',
-    secret: process.env.session_secret || 'byte-to-bite-development-secret',
+    secret: process.env.SESSION_SECRET || 'byte-to-bite-development-secret',
     store: sessionStore,
     resave: false,
     saveUninitialized: false,
