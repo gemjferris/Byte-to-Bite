@@ -1,8 +1,30 @@
 
 const express = require('express');
+const session = require('express-session');
+const MySQLSTore = require('express-mysql-session')(session);
+const connection = require('./db');
 
 const app = express();
 
+app.use(express.urlencoded({extended: true}));
+
+const sessionStore = new MySQLStore({
+    host: 'localhost'.
+        user: 'root',
+    password: process.env.DB_PASSWORD,
+    database: 'byte_to_bite'
+});
+
+app.use(session({
+    key: 'byte_to_bite_session',
+    secret: process.env.session_secret || 'byte-to-bite-development-secret',
+    store: sessionStore,
+    resave: false,
+    saveUninitialized: false,
+    cookie:{
+        maxAge:1000 * 60 * 60
+    }
+}));
 app.get('/', (req, res) => {
     res.send('Welcome to Byte to Bite!');
 });
